@@ -1,3 +1,5 @@
+'use strict';
+
 import axios from 'axios';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
@@ -21,6 +23,7 @@ let photosCounter = '';
 let page = 1;
 let submitCounter = 0;
 let totalHits = 0;
+let hits = 0;
 
 let galleryLightBox = new SimpleLightbox('.gallery a');
 galleryLightBox.open();
@@ -107,7 +110,7 @@ const addPhotos = async inSubmit => {
 input.addEventListener('input', () => {
   inputValue = input.value.trim();
 });
-form.addEventListener('submit', async event => {
+form.addEventListener('submit', event => {
   event.preventDefault();
   submitCounter += 1;
   gallery.innerHTML = '';
@@ -121,7 +124,7 @@ form.addEventListener('submit', async event => {
     Notiflix.Notify.info('Write what to look for');
   }
 });
-loadMoreBtn.addEventListener('click', async () => {
+loadMoreBtn.addEventListener('click', () => {
   photosCounter = '';
   page += 1;
   addPhotos(false);
