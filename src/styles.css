@@ -1,0 +1,66 @@
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: rgb(18, 106, 169);
+}
+
+.form-wrapper input {
+  height: 30px;
+  margin-right: 5px;
+}
+.form-wrapper button {
+  height: 30px;
+}
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  flex-basis: calc((100vw - 2 * 20px) / 3);
+  column-gap: 20px;
+  padding-top: 30px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.gallery a,
+.gallery a:visited {
+  color: darkslategrey;
+  text-decoration: none;
+}
+
+.photo-card {
+  width: calc((100vw - 80px) / 3);
+}
+
+.photo-card > img {
+  width: calc((100vw - 80px) / 3);
+  height: calc((((100vw - 80px) / 3) / 1.5));
+}
+.btn-wrap {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 40px;
+}
+
+.load-more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: aliceblue;
+  background-color: rgb(18, 106, 169);
+  width: 150px;
+  height: 50px;
+  border: none;
+  outline: none;
+  transition: background-color linear 300ms;
+}
+.load-more:hover {
+  cursor: pointer;
+  background-color: rgb(46, 232, 195);
+}
+
+.hidden {
+  display: none;
+  visibility: hidden;
+}
