@@ -1,17 +1,11 @@
 'use strict';
 
-import axios from 'axios';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-
-const optionsHTTP = {
-  baseUrl: 'https://pixabay.com/api/',
-  key: '36627448-7990d21daa2cb7c713fa88e55',
-  image_type: 'photo',
-  orientation: 'horizontal',
-  safesearch: true,
-};
+import { renderEl } from './render-foo';
+import { scrollFoo } from './scroll-foo';
+import { getPhotos } from './getData-foo';
 
 const input = document.querySelector('input[name="searchQuery"]');
 const form = document.getElementById('search-form');
@@ -28,66 +22,18 @@ let hits = 0;
 let galleryLightBox = new SimpleLightbox('.gallery a');
 galleryLightBox.open();
 
-const { baseUrl, key, image_type, orientation, safesearch } = optionsHTTP;
-
-const scrollFoo = () => {
-  const { height: cardHeight } = document
-    .querySelector('.gallery')
-    .firstElementChild.getBoundingClientRect();
-  window.scrollBy({
-    top: cardHeight / 6,
-    behavior: 'smooth',
-  });
-};
-const getPhotos = async (input, page) => {
-  try {
-    const response = await axios.get(
-      `${baseUrl}?key=${key}&q=${input}&image_type=${image_type}&orientation=${orientation}&safesearch=${safesearch}&per_page=40&page=${page}`
-    );
-    const hits = response.data.hits;
-    const totalHits = response.data.totalHits;
-    return { hits, totalHits };
-  } catch (error) {
-    console.log('ERROR:', error.message);
-  }
-};
 const addPhotos = async inSubmit => {
   const promiseResult = await getPhotos(inputValue, page);
   hits = promiseResult.hits;
   totalHits = promiseResult.totalHits;
+
   if (inSubmit && totalHits !== 0 && submitCounter > 1) {
     Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
   }
   if (hits.length !== 0) {
-    hits.forEach(
-      ({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-      }) => {
-        photosCounter += `<a href="${largeImageURL}"><div class="photo-card">
-  <img src="${webformatURL}" alt="${tags}" loading="lazy" />
-  <div class="info">
-    <p class="info-item">
-      <b>Likes: ${likes}</b>
-    </p>
-    <p class="info-item">
-      <b>Views: ${views}</b>
-    </p>
-    <p class="info-item">
-      <b>Comments: ${comments}</b>
-    </p>
-    <p class="info-item">
-      <b>Downloads: ${downloads}</b>
-    </p>
-  </div>
-</div></a>`;
-      }
-    );
+    hits.forEach(el => {
+      photosCounter += renderEl(el);
+    });
     gallery.insertAdjacentHTML('beforeend', photosCounter);
     if (inSubmit === true) loadMoreBtn.classList.remove('hidden');
   } else {
