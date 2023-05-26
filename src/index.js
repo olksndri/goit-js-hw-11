@@ -27,15 +27,17 @@ const addPhotos = async inSubmit => {
   hits = promiseResult.hits;
   totalHits = promiseResult.totalHits;
 
-  if (inSubmit && totalHits !== 0 && submitCounter > 1) {
+  if (inSubmit && totalHits !== 0) {
     Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
   }
+
   if (hits.length !== 0) {
     hits.forEach(el => {
       photosCounter += renderEl(el);
     });
     gallery.insertAdjacentHTML('beforeend', photosCounter);
-    if (inSubmit === true) loadMoreBtn.classList.remove('hidden');
+    if (inSubmit && totalHits !== hits.length)
+      loadMoreBtn.classList.remove('hidden');
   } else {
     loadMoreBtn.classList.add('hidden');
     if (inSubmit === true) {
@@ -49,6 +51,7 @@ const addPhotos = async inSubmit => {
       );
     }
   }
+
   galleryLightBox.refresh();
   scrollFoo();
 };
